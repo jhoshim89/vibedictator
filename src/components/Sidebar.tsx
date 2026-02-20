@@ -12,7 +12,9 @@ import {
   AboutSettings,
   PostProcessingSettings,
   ModelsSettings,
+  AiSettings,
 } from "./settings";
+import { Brain } from "lucide-react";
 
 export type SidebarSection = keyof typeof SECTIONS_CONFIG;
 
@@ -74,6 +76,12 @@ export const SECTIONS_CONFIG = {
     component: AboutSettings,
     enabled: () => true,
   },
+  ai: {
+    labelKey: "AI Settings",
+    icon: Brain,
+    component: AiSettings,
+    enabled: () => true,
+  }
 } as const satisfies Record<string, SectionConfig>;
 
 interface SidebarProps {
@@ -103,11 +111,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
           return (
             <div
               key={section.id}
-              className={`flex gap-2 items-center p-2 w-full rounded-lg cursor-pointer transition-colors ${
-                isActive
+              className={`flex gap-2 items-center p-2 w-full rounded-lg cursor-pointer transition-colors ${isActive
                   ? "bg-logo-primary/80"
                   : "hover:bg-mid-gray/20 hover:opacity-100 opacity-85"
-              }`}
+                }`}
               onClick={() => onSectionChange(section.id)}
             >
               <Icon width={24} height={24} className="shrink-0" />

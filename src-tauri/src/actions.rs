@@ -486,6 +486,17 @@ impl ShortcutAction for TranscribeAction {
                                 }
                             });
 
+                            // AI_PROCESSOR HOOK
+                            let ai_state = ah.state::<crate::ai_settings::AiSettingsState>();
+                            let ai_settings = ai_state.0.lock().unwrap().clone();
+                            let final_text = match crate::ai_processor::process_text(&final_text, &ai_settings).await {
+                                Ok(res) => res,
+                                Err(e) => {
+                                    error!("AI processor failed: {}", e);
+                                    final_text
+                                }
+                            };
+
                             // Paste the final text (either processed or original)
                             let ah_clone = ah.clone();
                             let paste_time = Instant::now();
